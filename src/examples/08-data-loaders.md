@@ -142,7 +142,7 @@ process.stdout.write(JSON.stringify(cities));
 
 **Step 3** - Use it in a page:
 
-```js
+```javascript
 const cities = FileAttachment("data/swiss-cities.json").json()
 ```
 
@@ -173,7 +173,7 @@ sys.stdout.write(gdf.to_json())
 
 **Step 3** - Use it in a page:
 
-```js
+```javascript
 const data = FileAttachment("data/my-data.geojson").json()
 ```
 
