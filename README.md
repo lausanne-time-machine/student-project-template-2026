@@ -18,34 +18,94 @@ For more, see <https://observablehq.com/framework/getting-started>.
 
 ## Project structure
 
-A typical Framework project looks like this:
-
 ```ini
 .
+├─ .agents
+│  └─ skills                   # coding-agent skill files (source of truth)
+├─ .claude
+│  └─ skills                   # symlinks → .agents/skills/* (for Claude Code)
 ├─ src
 │  ├─ components
-│  │  └─ timeline.js           # an importable module
+│  │  └─ leaflet-heat.js       # Leaflet heatmap plugin bundle
 │  ├─ data
-│  │  ├─ launches.csv.js       # a data loader
-│  │  └─ events.json           # a static data file
-│  ├─ example-dashboard.md     # a page
-│  ├─ example-report.md        # another page
+│  │  ├─ cadastre-berney.geojson.js   # JS data loader (outputs GeoJSON)
+│  │  └─ ...                   # raw data files and loaders
+│  ├─ examples                 # worked examples (read-only reference)
+│  │  ├─ 01-page-structure.md
+│  │  ├─ 02-reactivity.md
+│  │  ├─ 03-data-tables.md
+│  │  ├─ 04-charts.md
+│  │  ├─ 05-maps-leaflet.md
+│  │  ├─ 06-maps-historical.md
+│  │  ├─ 07-maps-plot.md
+│  │  ├─ 08-data-loaders.md
+│  │  ├─ 09-venice-landregister.md    # Python loader + Leaflet map
+│  │  └─ 10-lausanne-cadastre-renove.md  # complete example (map + table + filter)
 │  └─ index.md                 # the home page
 ├─ .gitignore
-├─ observablehq.config.js      # the app config file
+├─ AGENTS.md                   # coding-agent instructions (shared)
+├─ CLAUDE.md -> AGENTS.md      # symlink for Claude Code
+├─ observablehq.config.js      # app config (sidebar navigation, title)
 ├─ package.json
+├─ requirements.txt            # Python dependencies for data loaders
+├─ skills-lock.json            # installed agent skills manifest
 └─ README.md
 ```
 
-**`src`** - This is the “source root” — where your source files live. Pages go here. Each page is a Markdown file. Observable Framework uses [file-based routing](https://observablehq.com/framework/project-structure#routing), which means that the name of the file controls where the page is served. You can create as many pages as you like. Use folders to organize your pages.
+**`src/index.md`** - The home page for your app. Add your own pages directly in `src/` (e.g. `src/my-analysis.md`).
 
-**`src/index.md`** - This is the home page for your app. You can have as many additional pages as you’d like, but you should always have a home page, too.
+**`src/data`** - [Data loaders](https://observablehq.com/framework/data-loaders) and static data files. Loader scripts (`.js`, `.py`) are executed at build/preview time; their stdout is cached and accessible via `FileAttachment(“file.ext”)`.
 
-**`src/data`** - You can put [data loaders](https://observablehq.com/framework/data-loaders) or static data files anywhere in your source root, but we recommend putting them here.
+**`src/components`** - Shared JavaScript modules importable from any page.
 
-**`src/components`** - You can put shared [JavaScript modules](https://observablehq.com/framework/imports) anywhere in your source root, but we recommend putting them here. This helps you pull code out of Markdown files and into JavaScript modules, making it easier to reuse code across pages, write tests and run linters, and even share code with vanilla web applications.
+**`src/examples`** - Worked, runnable examples covering page structure, reactivity, tables, charts, Leaflet maps, historical tile layers, Plot maps, data loaders, and two complete real-dataset examples (Venice 1740 land register via Python loader; Lausanne 1888 cadastre with reactive filtering). Read these for reference; don’t edit them.
 
-**`observablehq.config.js`** - This is the [app configuration](https://observablehq.com/framework/config) file, such as the pages and sections in the sidebar navigation, and the app’s title.
+**`observablehq.config.js`** - [App configuration](https://observablehq.com/framework/config): sidebar navigation, title, etc. Add new pages here so they appear in the nav.
+
+## Python virtual environment
+
+Python data loaders (files ending in `.py` in `src/data/`) run inside a `.venv/` virtual environment. To set it up:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Observable Framework automatically uses `.venv/bin/python` when executing `.py` data loaders, so you don’t need to activate the environment manually during `npm run dev` or `npm run build`.
+
+Add new Python dependencies to `requirements.txt` and re-run `pip install -r requirements.txt`.
+
+## Coding agent tools
+
+This project ships with configuration for AI coding agents (e.g. Claude Code).
+
+### `AGENTS.md` / `CLAUDE.md`
+
+`AGENTS.md` is the single source of truth for agent instructions: project context, architecture, Observable Framework pitfalls, data patterns, and mapping conventions. `CLAUDE.md` is a symlink to the same file so that Claude Code picks it up automatically.
+
+### Skills (`.agents/skills/`)
+
+Skills are short, focused knowledge files that give the agent deep expertise on a specific library or feature (e.g. `observable-framework-lib-leaflet`, `observable-framework-data-loaders`). They are stored in `.agents/skills/` and listed with their source hashes in `skills-lock.json`.
+
+The skill files themselves are **not tracked in git** — only `skills-lock.json` is. To install or reinstall them after cloning, run:
+
+```bash
+npx skills install
+```
+
+This reads `skills-lock.json` and downloads the skill files into `.agents/skills/`. To add a new skill or update existing ones:
+
+```bash
+npx skills add <skill-name>   # add a specific skill
+npx skills update             # update all skills to latest versions
+```
+
+See [skills.sh](https://skills.sh/) for full documentation.
+
+### Symlinks for Claude Code (`.claude/skills/`)
+
+Claude Code looks for skills in `.claude/skills/`. Each entry there is a symlink pointing to the corresponding file in `.agents/skills/`, so both tool families share the same skill files without duplication.
 
 ## Command reference
 
