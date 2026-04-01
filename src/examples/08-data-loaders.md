@@ -25,7 +25,7 @@ src/data/
 
 The file extension **before** the last extension determines the output format. A file named `foo.geojson.js` produces `foo.geojson`. You access it in a page with:
 
-```js
+```javascript
 const data = FileAttachment("data/foo.geojson").json()
 ```
 
