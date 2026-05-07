@@ -72,7 +72,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Observable Framework automatically uses `.venv/bin/python` when executing `.py` data loaders, so you don’t need to activate the environment manually during `npm run dev` or `npm run build`.
+Observable Framework calls the system `python3` for `.py` data loaders, so you must activate the virtual environment before running `npm run dev` or `npm run build`:
+
+```bash
+source .venv/bin/activate
+npm run dev
+```
 
 Add new Python dependencies to `requirements.txt` and re-run `pip install -r requirements.txt`.
 
