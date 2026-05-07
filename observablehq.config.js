@@ -26,6 +26,7 @@ export default {
       pages: [
         { name: "Interactive Maps (Leaflet)",  path: "/examples/05-maps-leaflet" },
         { name: "Historical Maps (GeoServer)", path: "/examples/06-maps-historical" },
+        { name: "Historical Maps (SwissTopo)", path: "/examples/11-maps-historical-swisstopo" },
         { name: "Analytical Maps (Plot)",      path: "/examples/07-maps-plot" },
       ]
     },
