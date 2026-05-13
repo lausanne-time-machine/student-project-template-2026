@@ -11,10 +11,11 @@ The EPFL Time Machine GeoServer at **geo-timemachine.epfl.ch** serves historical
 
 ## Available Layers
 
-The GeoServer exposes 31 Lausanne historical maps spanning from 1721 to 1970. Select one below to view it:
+The GeoServer exposes Lausanne historical maps spanning from 1721 to 1970. Select one below to view it:
 
 ```js
 const lausanneLayers = [
+  {label: "Lausanne Parcel Plan (1721)",             name: "lausanne-1721-melotte"},
   {label: "Lausanne Pictorial Plan (1721)",          name: "lausanne-1721-melotte-pictorial"},
   {label: "Lausanne Land Owners (1723)",             name: "lausanne-1723-melotte-owners"},
   {label: "Lausanne Official Map (1806)",            name: "lausanne-1806-official-emery"},
@@ -33,6 +34,7 @@ const lausanneLayers = [
   {label: "Lausanne Official Plan (1875)",           name: "lausanne-1875-decrousaz"},
   {label: "Lausanne City Directory (1875)",          name: "lausanne-1875-indicateur-reber"},
   {label: "Lausanne City Directory (1880)",          name: "lausanne-1880-indicateur-wurster"},
+  {label: "Lausanne Parcel Plan (1888)",          name: "lausanne-1888-renove"},
   {label: "Lausanne Map (1890)",                     name: "lausanne-1890-lebet"},
   {label: "Lausanne Parcel Plan (1900)",             name: "lausanne-1900-payot"},
   {label: "Lausanne Tramway Plan (1903)",            name: "lausanne-1903-tramway-reber"},
